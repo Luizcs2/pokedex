@@ -1,4 +1,5 @@
 import { rl } from "./interface.js";
+import { getCommands } from "./commands.js";
 
 export function cleanInput(input:string):string[]{
     return input.trim().toLowerCase().split(/\s{1,}/);
@@ -15,10 +16,16 @@ export function startREPL(){
         return;
     }
 
+    for (const command in getCommands()){
+        if (command === input){
+            getCommands()[command].callback(getCommands());
+            rl.setPrompt("\n >");
+            return;
+        }
+    }
+
     const wordarr = cleanInput(input);
 
-    console.log(`Your command was: ${wordarr[0]}`);
-    rl.prompt();
 
     });
 }
