@@ -1,4 +1,4 @@
-import type { CLICommand } from "./command.js";
+import type { CLICommand } from "./command";
 
 export function commandHelp(commands: Record<string, CLICommand>) {
   console.log();
