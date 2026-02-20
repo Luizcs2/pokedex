@@ -4,6 +4,9 @@ export type ShallowLocation = {
     }
 
 export type ShallowLocationResponse = {
+    count: number;
+    next?: string | null;
+    previous?: string | null;
     results: ShallowLocation [];
 }
 
@@ -18,12 +21,14 @@ export type LocationResponse = {
 }
 
 export class PokeAPI {
-    private static BASE_URL = "https://pokeapi.co/api/v2";
+    public static BASE_URL = "https://pokeapi.co/api/v2";
+    nextLocationsURL: string | null = null;
+    prevLocationsURL: string | null = null;
 
     constructor() {}
 
     async fetchLocations (pageURL?: string): Promise<ShallowLocation[]> {
-        const url = `${PokeAPI.BASE_URL}/location-area`
+        const url = pageURL ?? `${PokeAPI.BASE_URL}/location-area`;
         try {
             const response = await fetch (url, {
                 method: "GET",
@@ -33,7 +38,11 @@ export class PokeAPI {
             }
 
             const data: ShallowLocationResponse = await response.json();
-            return data.results;
+            this.nextLocationsURL = data.next ?? null;
+            this.prevLocationsURL = data.previous ?? null;
+            return data.results.map((shallowLocation) => ({
+                name: shallowLocation.name,
+            }));
         }
         catch(err)
         {

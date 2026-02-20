@@ -1,6 +1,7 @@
 import type { CLICommand, State } from "./state.js";
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
+import * as maps from "./command_maps.js";  
 
 export function getCommands(): Record<string, CLICommand> {
   return {
@@ -17,9 +18,12 @@ export function getCommands(): Record<string, CLICommand> {
     map: {
       name: "map",
       description: "Displays the the areas in pokemon world",
-      callback: async (_state: State): Promise<void> => {
-        console.log("Map command is not implemented yet.");
-      },
+      callback: maps.commandMap,
     },
+    mapb:{
+      name: "mapb",
+      description: "Displays the the areas in pokemon world, but backwards",
+      callback: maps.commandMapMove,
+    }
   };
 }
