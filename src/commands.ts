@@ -1,4 +1,4 @@
-import type { CLICommand } from "./state.js";
+import type { CLICommand, State } from "./state.js";
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
 
@@ -15,8 +15,11 @@ export function getCommands(): Record<string, CLICommand> {
       callback: commandExit,
     },
     map: {
-        name: "map",
-        description: "Displays the the areas in pokemon world",
-        callback:{
-    }
+      name: "map",
+      description: "Displays the the areas in pokemon world",
+      callback: async (_state: State): Promise<void> => {
+        console.log("Map command is not implemented yet.");
+      },
+    },
+  };
 }

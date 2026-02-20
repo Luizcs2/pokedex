@@ -5,13 +5,15 @@ import { PokeAPI } from "./service/pokeapi.js";
 export type CLICommand = {
   name: string;
   description: string;
-  callback: (state: State) => void;
+  callback: (state: State) => Promise<void>;
 };
 
 export type State = {
   readline: Interface;
-  pokeapi: PokeAPI
+  pokeapi: PokeAPI;
   commands: Record<string, CLICommand>;
+  nextLocationsURL: string | null;
+  prevLocationsURL: string | null;
 };
 
 export function initState() : State {
@@ -23,6 +25,9 @@ export function initState() : State {
 
   return {
     readline: rl,
+    pokeapi: new PokeAPI(),
     commands: getCommands(),
+    nextLocationsURL: null,
+    prevLocationsURL: null,
   };
 }
