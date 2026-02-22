@@ -10,7 +10,7 @@ export function cleanInput(input: string): string[] {
 
 
 export async function startREPL(state: State) {
- 
+
 
   state.readline.prompt();
 
@@ -25,7 +25,7 @@ export async function startREPL(state: State) {
 
     const commands = state.commands;
     const cmd = commands[commandName];
-    
+
     if (!cmd) {
       console.log(
         `Unknown command: "${commandName}". Type "help" for a list of commands.`,
@@ -35,7 +35,7 @@ export async function startREPL(state: State) {
     }
 
     try {
-      await cmd.callback(state);
+      await cmd.callback(state, ...words.slice(1));
     } catch (e) {
       console.log(e);
     }

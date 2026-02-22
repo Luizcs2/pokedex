@@ -8,7 +8,7 @@ export async function commandMap (state: State): Promise<void> {
     try{
         const location = await state.pokeapi.fetchLocations(url);
          for(const loc of location){
-            console.log(loc);
+            console.log(loc.name);
         }
         if (!state.pokeapi.nextLocationsURL) {
             console.log("No more locations to display.");
@@ -30,7 +30,7 @@ export async function commandMapMove (state:State): Promise<void>{
         }
         const location = await state.pokeapi.fetchLocations(prevURL);
         for(const loc of location){
-            console.log(loc);
+            console.log(loc.name);
         }
     }
     catch(err){

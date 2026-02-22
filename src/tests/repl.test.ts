@@ -1,4 +1,4 @@
-import { cleanInput } from "./repl";
+import { cleanInput } from "../repl";
 
 import {describe,test,expect} from "vitest";
 

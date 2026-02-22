@@ -1,29 +1,35 @@
 import type { CLICommand, State } from "./state.js";
 import { commandExit } from "./command_exit.js";
 import { commandHelp } from "./command_help.js";
-import * as maps from "./command_maps.js";  
+import * as maps from "./command_maps.js";
+import { commandEncounter } from "./command_encounter.js";
 
 export function getCommands(): Record<string, CLICommand> {
   return {
     help: {
       name: "help",
-      description: "Displays a help message",
+      description: "list all available commands",
       callback: commandHelp,
     },
     exit: {
       name: "exit",
-      description: "Exit the Pokedex",
+      description: "exit the Pokedex",
       callback: commandExit,
     },
     map: {
       name: "map",
-      description: "Displays the the areas in pokemon world",
+      description: "Get the next page of locations",
       callback: maps.commandMap,
     },
     mapb:{
       name: "mapb",
-      description: "Displays the the areas in pokemon world, but backwards",
+      description: "Get the previous page of locations",
       callback: maps.commandMapMove,
+    },
+    explore: {
+      name: "explore <name/id>",
+      description:"get all pokemon in a location",
+      callback: commandEncounter,
     }
   };
 }
