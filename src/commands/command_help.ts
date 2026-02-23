@@ -1,5 +1,5 @@
 
-import type { CLICommand, State } from "./state.js";
+import type { CLICommand, State } from "../state.js";
 
 export async function commandHelp(state: State): Promise<void> {
   console.log();

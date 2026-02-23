@@ -1,5 +1,5 @@
-import type { State } from "./state.js";
-import { PokeAPI } from "./service/pokeapi.js";
+import type { State } from "../state.js";
+import { PokeAPI } from "../service/pokeapi.js";
 
 export async function commandMap (state: State): Promise<void> {
     const url = state.pokeapi.nextLocationsURL ?? `${PokeAPI.BASE_URL}/location-area`;

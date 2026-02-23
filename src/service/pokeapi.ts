@@ -1,46 +1,5 @@
-import { Cache } from "src/pokecache";
-
-export type ShallowLocation = {
-        name: string;
-        url?: string;
-    }
-
-export type ShallowLocationResponse = {
-    count: number;
-    next?: string | null;
-    previous?: string | null;
-    results: ShallowLocation [];
-}
-
-export type Location  = {
-    name: string;
-}
-
-
-export type LocationResponse = {
-    id: number;
-    name: string;
-    names: Location[];
-}
-
-type PokemonEncounter = {
-    pokemon:{
-        name: string;
-        url?: string;
-    }
-
-}
-
-export type PokemonEncounterSummary = {
-    name: string;
-}
-
-export type PokemonInAreaResponse = {
-    id: number;
-    name: string;
-    pokemon_encounters: PokemonEncounter[];
-}
-
+import { Cache } from "../pokecache.js";
+import { Location, LocationResponse, PokemonEncounterSummary, PokemonInAreaResponse, ShallowLocation, ShallowLocationResponse, PokemonDetailsResponse } from "../types/types.js";
 
 export class PokeAPI {
     public static BASE_URL = "https://pokeapi.co/api/v2";
@@ -69,7 +28,7 @@ export class PokeAPI {
 
 
 
-                return data.results.map((shallowLocation) => ({
+                return data.results.map((shallowLocation: ShallowLocation) => ({
                     name: shallowLocation.name,
                 }));
             }
@@ -85,7 +44,7 @@ export class PokeAPI {
         this.nextLocationsURL = cachedData.next ?? null;
         this.prevLocationsURL = cachedData.previous ?? null;
 
-        return cachedData.results.map((shallowLocation) => ({
+        return cachedData.results.map((shallowLocation: ShallowLocation) => ({
             name: shallowLocation.name,
         }));
     }
@@ -144,7 +103,7 @@ export class PokeAPI {
                 const data: PokemonInAreaResponse = await response.json();
                 this.cache.add(url,data);
 
-                return data.pokemon_encounters.map((encounter) => ({
+                return data.pokemon_encounters.map((encounter: any) => ({
                     name: encounter.pokemon.name,
                 }));
             }
@@ -156,8 +115,42 @@ export class PokeAPI {
         };
 
         const cacheData = this.cache.get(url) as PokemonInAreaResponse;
-        return cacheData.pokemon_encounters.map((encounter) => ({
+        return cacheData.pokemon_encounters.map((encounter: any) => ({
             name: encounter.pokemon.name,
         }));
     };
+
+    async PokemonDetails(pokemonName:string): Promise<PokemonDetailsResponse> {
+        const url = `${PokeAPI.BASE_URL}/pokemon/${pokemonName}`;
+
+        if(!this.cache.get(url)){
+            try{
+                const response = await fetch(url,{
+                    method: "GET",
+                    headers: {
+                        "content-type": "application/json",
+                    },
+                })
+
+                if(!response.ok){
+                    throw new Error("failed to fetch pokemon details");
+                }
+
+                const data: PokemonDetailsResponse = await response.json();
+                this.cache.add(url,data);
+                return data;
+            }
+            catch(err)
+            {
+                console.log(err)
+            };
+        }
+
+        const cachedata = this.cache.get(url) as PokemonDetailsResponse;
+        return cachedata;
+    };
+
+    async fetchPokemonXP(pokemonName: string): Promise<PokemonDetailsResponse> {
+        return this.PokemonDetails(pokemonName);
+    }
 }
