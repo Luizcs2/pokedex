@@ -5,7 +5,7 @@ export async function commandcatch(state: State, pokemonName: string): Promise<v
     console.log(`Throwing a Pokeball at ${pokemonName}...`);
     const data = await state.pokeapi.fetchPokemonXP(pokemonName);
     const pokemonXP = data.base_experience;
-    const difficulty = Math.min(0.25 * pokemonXP / 100, 0.99);
+    const difficulty = Math.min(0.3 * pokemonXP / 100, 0.99);
     let tries = 0;
 
     if (tries>10) {
